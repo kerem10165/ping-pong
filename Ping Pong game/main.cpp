@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <map>
+#include<cstdlib>
+#include<ctime>
 
 using namespace std;
 
@@ -12,8 +14,12 @@ const map<int, sf::Color> harita =
   {4,sf::Color::Yellow}
 };
 
+const map<int, float> baslangic =
+{ {0,-5.0f},{1,5.f}};
+
 
 void klavyeKontrol();
+void ballControl(sf::RectangleShape& top, sf::RectangleShape& oyuncu1, sf::RectangleShape& oyuncu2);
 
 float max_speed = 25.0f;
 float speed_1 = 0.f;
@@ -22,10 +28,16 @@ int direction = 1.f;
 float ivme = 1.0f;
 float drag = 0.5f;
 float dt;
+int space = 0;
+int random;
+float top_x=0.f;
+float top_y=0.f;
 
 
 int main()
 {
+	srand(time(NULL));
+
 	sf::ContextSettings ayarlar;
 	ayarlar.antialiasingLevel = 4;
 	sf::RenderWindow pencere(sf::VideoMode(1024, 576), "Ping Pong", sf::Style::Default, ayarlar);
@@ -77,8 +89,7 @@ int main()
 
 	}
 
-
-
+	return 0;
 }
 
 void klavyeKontrol()
@@ -159,3 +170,32 @@ void klavyeKontrol()
 		}
 	}
 }
+
+void ballControl(sf::RectangleShape& top, sf::RectangleShape& oyuncu1, sf::RectangleShape& oyuncu2)
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && space == 0)
+	{
+		random = rand() % 2;
+		top_x = baslangic.at(random);
+		random = rand() % 2;
+		top_y = baslangic.at(random);
+		++space;
+	}
+
+	if (top.getPosition().y >= 576-15)
+	{
+		top_y = -top_y;
+	}
+
+	else if (top.getPosition().y <= 0)
+	{
+		top_y = -top_y;
+	}
+
+	if (top_x )
+	{
+
+	}
+
+}
+
