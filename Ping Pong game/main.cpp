@@ -21,11 +21,11 @@ const map<int, float> baslangic =
 void klavyeKontrol();
 void ballControl(sf::RectangleShape& top, sf::RectangleShape& oyuncu1, sf::RectangleShape& oyuncu2);
 
-float max_speed = 25.0f;
+float max_speed = 15.0f;
 float speed_1 = 0.f;
 float speed_2 = 0.f;
 int direction = 1.f;
-float ivme = 1.0f;
+float ivme = 1.f;
 float drag = 0.5f;
 float dt;
 int space = 0;
@@ -54,7 +54,7 @@ int main()
 
 	sf::RectangleShape top;
 	top.setSize(sf::Vector2f(15, 15));
-	top.setPosition((1024 / 2) - 7.5, (576 / 2) - 7.5);
+	top.setPosition((1024 / 2) - 7, (576 / 2) - 3);
 
 	sf::Clock zaman;
 	
@@ -64,7 +64,7 @@ int main()
 		sf::Event olay;
 		dt = zaman.restart().asSeconds();
 
-
+		
 		while (pencere.pollEvent(olay))
 		{
 			if (olay.type == sf::Event::Closed)
@@ -77,6 +77,9 @@ int main()
 
 		oyuncu1.move(0, speed_1 * dt * 60);
 		oyuncu2.move(0, speed_2 * dt * 60);
+		ballControl(top,oyuncu1,oyuncu2);
+		top.move(top_x * dt * 60, top_y * dt * 60);
+
 
 
 		pencere.clear();
@@ -173,13 +176,27 @@ void klavyeKontrol()
 
 void ballControl(sf::RectangleShape& top, sf::RectangleShape& oyuncu1, sf::RectangleShape& oyuncu2)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && space == 0)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && space <= 0)
 	{
 		random = rand() % 2;
 		top_x = baslangic.at(random);
 		random = rand() % 2;
 		top_y = baslangic.at(random);
 		++space;
+		random = rand() % 5;
+		top.setFillColor(harita.at(random));
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+	{
+		top.setPosition((1024 / 2) - 7.5, (576 / 2) - 7.5);
+		random = rand() % 2;
+		top_x = baslangic.at(random);
+		random = rand() % 2;
+		top_y = baslangic.at(random);
+		++space;
+		random = rand() % 5;
+		top.setFillColor(harita.at(random));
 	}
 
 	if (top.getPosition().y >= 576-15)
@@ -192,9 +209,14 @@ void ballControl(sf::RectangleShape& top, sf::RectangleShape& oyuncu1, sf::Recta
 		top_y = -top_y;
 	}
 
-	if (top_x )
+	if (top.getPosition().x <= 15  && (top.getPosition().y >= oyuncu1.getPosition().y-15 && top.getPosition().y <= oyuncu1.getPosition().y+80))
 	{
+		top_x = -top_x;
+	}
 
+	else if (top.getPosition().x >= 1025-30 && (top.getPosition().y >= oyuncu2.getPosition().y - 15 && top.getPosition().y <= oyuncu2.getPosition().y+80))
+	{
+		top_x = -top_x;
 	}
 
 }
