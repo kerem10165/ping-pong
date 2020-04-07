@@ -199,22 +199,24 @@ void ballControl(sf::RectangleShape& top, sf::RectangleShape& oyuncu1, sf::Recta
 		top.setFillColor(harita.at(random));
 	}
 
-	if (top.getPosition().y >= 576-15)
+	if (top.getPosition().y > 576-15)
 	{
+		top.setPosition(top.getPosition().x, 576-15);
 		top_y = -top_y;
 	}
 
-	else if (top.getPosition().y <= 0)
+	else if (top.getPosition().y < 0)
 	{
+		top.setPosition(top.getPosition().x, 0);
 		top_y = -top_y;
 	}
 
-	if (top.getPosition().x <= 15  && (top.getPosition().y >= oyuncu1.getPosition().y-15 && top.getPosition().y <= oyuncu1.getPosition().y+80))
+	if ((top.getPosition().x <= 15 && top.getPosition().x >=14) &&  (top.getPosition().y+15 > oyuncu1.getPosition().y && top.getPosition().y < oyuncu1.getPosition().y+80))
 	{
 		top_x = -top_x;
 	}
 
-	else if (top.getPosition().x >= 1025-30 && (top.getPosition().y >= oyuncu2.getPosition().y - 15 && top.getPosition().y <= oyuncu2.getPosition().y+80))
+	else if ((top.getPosition().x >= 1024-30 && top.getPosition().x <= 1024 - 29) && (top.getPosition().y+15 > oyuncu2.getPosition().y && top.getPosition().y < oyuncu2.getPosition().y+80))
 	{
 		top_x = -top_x;
 	}
